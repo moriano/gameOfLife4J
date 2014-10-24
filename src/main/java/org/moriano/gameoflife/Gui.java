@@ -57,7 +57,6 @@ public class Gui extends JFrame {
 
         this.baseContainer.add(basePanel);
 
-
         this.addButtonListener();
 
         this.pack();
