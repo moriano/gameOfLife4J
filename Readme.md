@@ -13,6 +13,7 @@ Just make sure you have a JDK and Maven installed, then run
 
 
 ```
-mvn run
+mvn compile
+mvn exec:java
 ```
 
