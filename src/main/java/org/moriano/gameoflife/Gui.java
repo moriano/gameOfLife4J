@@ -1,7 +1,6 @@
 package org.moriano.gameoflife;
 
 
-import sun.reflect.annotation.ExceptionProxy;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +12,11 @@ import java.awt.event.ActionListener;
  */
 public class Gui extends JFrame {
 
-    private final int rows = 50;
-    private final int columns = 50;
+
     private Container baseContainer;
-    private Cell[][] cells = new Cell[rows][columns];
+    private Cell[][] cells = CellPresets.RANDOM.getCells();
+    private final int rows = cells.length;
+    private final int columns = cells[0].length;
     private JButton button = new JButton("Start");
     private JButton swapButton = new JButton("Swap");
     private BorderLayout baseLayout = new BorderLayout();
@@ -28,6 +28,7 @@ public class Gui extends JFrame {
     private Game gameOfLife = new Game();
 
     private Thread gameThread = new Thread(gameOfLife);
+    private JComboBox<CellPresets> cellPresets = new JComboBox(CellPresets.values());
 
     public Gui() throws HeadlessException {
 
@@ -46,6 +47,7 @@ public class Gui extends JFrame {
         this.basePanel.add(this.centerPanel, BorderLayout.CENTER);
         this.basePanel.add(this.topPanel, BorderLayout.NORTH);
 
+        topPanel.add(this.cellPresets);
         topPanel.add(this.button);
         topPanel.add(this.swapButton);
 
@@ -57,6 +59,7 @@ public class Gui extends JFrame {
 
         this.baseContainer.add(basePanel);
 
+        this.addComboBoxListener();
         this.addButtonListener();
 
         this.pack();
@@ -64,8 +67,24 @@ public class Gui extends JFrame {
         this.setTitle("Game of life");
 
         this.setVisible(true);
+    }
 
-
+    private void addComboBoxListener() {
+        this.cellPresets.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CellPresets cellPreset = (CellPresets)cellPresets.getSelectedItem();
+                Cell[][] newCells = null;
+                if(cellPreset == CellPresets.GLIDER) {
+                    newCells = cellPreset.getCells();
+                } else if(cellPreset == CellPresets.LIGHT_WEIGHT_SPACE_SHIP) {
+                    newCells = cellPreset.getCells();
+                } else if(cellPreset == CellPresets.RANDOM) {
+                    newCells = cellPreset.getCells();
+                }
+                resetCells(newCells);
+             }
+        });
     }
 
     private void addButtonListener() {
@@ -114,7 +133,6 @@ public class Gui extends JFrame {
                     }
                 }
 
-
                 for (int row = 0; row < cells.length; row++) {
                     for (int column = 0; column < cells[row].length; column++) {
 
@@ -146,8 +164,6 @@ public class Gui extends JFrame {
                         if(rightColumn == columns) {
                             rightColumn = 0;
                         }
-
-
 
                         Cell cell1 = cells[topRow][leftColumn];
                         Cell cell2 = cells[topRow][column];
@@ -192,21 +208,21 @@ public class Gui extends JFrame {
                     }
                 }
 
-                cells = newCells;
-
-
-                centerPanel.removeAll();
-
-
-                for (int row = 0; row < rows; row++) {
-                    for (int column = 0; column < columns; column++) {
-                        centerPanel.add(cells[row][column]);
-                    }
-                }
-                centerPanel.revalidate();
-                centerPanel.repaint();
+                resetCells(newCells);
             }
-
         }
+    }
+
+    private void resetCells(Cell[][] newCells) {
+        cells = newCells;
+        centerPanel.removeAll();
+
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                centerPanel.add(cells[row][column]);
+            }
+        }
+        centerPanel.revalidate();
+        centerPanel.repaint();
     }
 }
