@@ -12,6 +12,9 @@ import java.awt.event.MouseListener;
 public class Cell extends JLabel {
 
     private CellState state;
+    private CellState nextState;
+
+
     private final Border border = BorderFactory.createLineBorder(Color.WHITE, 1);
 
     private void paint(CellState state) {
@@ -79,5 +82,16 @@ public class Cell extends JLabel {
     public void setState(CellState state) {
         this.state = state;
         this.paint(state);
+    }
+
+    public void setNextState(CellState nextState) {
+        this.nextState = nextState;
+    }
+
+    public void applyNextState() {
+        if(this.state != this.nextState) {
+            this.setState(this.nextState);
+        }
+        this.nextState = CellState.UNKNOWN;
     }
 }

@@ -5,8 +5,8 @@ package org.moriano.gameoflife;
  */
 public enum CellState {
     ALIVE,
-    DEAD;
+    DEAD,
+    UNKNOWN;
 
-    CellState() {
-    }
+
 }

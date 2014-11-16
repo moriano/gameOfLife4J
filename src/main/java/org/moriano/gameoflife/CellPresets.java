@@ -11,6 +11,9 @@ public enum CellPresets {
     LIGHT_WEIGHT_SPACE_SHIP(getLightWeightSpaceShip())
     ;
 
+    private static final int ROWS = 90;
+    private static final int COLUMNS = 160;
+
     private Cell[][] cells;
 
 
@@ -41,9 +44,8 @@ public enum CellPresets {
      * @return
      */
     private static Cell[][] getGlider() {
-        int rows = 50;
-        int columns = 50;
-        Cell[][] cells = new Cell[rows][columns];
+
+        Cell[][] cells = new Cell[ROWS][COLUMNS];
         reset(cells);
         int startRow = (cells.length / 2);
         int startColumn = (cells[0].length / 2);
@@ -58,12 +60,11 @@ public enum CellPresets {
     }
 
     private static Cell[][] getRandom() {
-        int rows = 50;
-        int columns = 50;
-        Cell[][] cells = new Cell[rows][columns];
 
-        for(int row = 0; row < rows; row++) {
-            for(int column = 0; column < columns; column++) {
+        Cell[][] cells = new Cell[ROWS][COLUMNS];
+
+        for(int row = 0; row < ROWS; row++) {
+            for(int column = 0; column < COLUMNS; column++) {
                 cells[row][column] = new Cell(Math.random() % 3 == 0 ? CellState.ALIVE : CellState.DEAD);
             }
         }
@@ -83,9 +84,7 @@ public enum CellPresets {
      * @return
      */
     private static Cell[][] getLightWeightSpaceShip() {
-        int rows = 50;
-        int columns = 50;
-        Cell[][] cells = new Cell[rows][columns];
+        Cell[][] cells = new Cell[ROWS][COLUMNS];
         reset(cells);
         int startRow = (cells.length / 2);
         int startColumn = (cells[0].length / 2);

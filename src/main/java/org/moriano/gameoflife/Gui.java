@@ -63,7 +63,7 @@ public class Gui extends JFrame {
         this.addButtonListener();
 
         this.pack();
-        this.setSize(800, 600);
+        //this.setSize(800, 600);
         this.setTitle("Game of life");
 
         this.setVisible(true);
@@ -126,12 +126,12 @@ public class Gui extends JFrame {
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
-                Cell[][] newCells = new Cell[rows][columns];
+                /*Cell[][] newCells = new Cell[rows][columns];
                 for(int row = 0; row < newCells.length; row++) {
                     for(int column = 0; column < newCells[row].length; column++) {
                         newCells[row][column] = cells[row][column];
                     }
-                }
+                }*/
 
                 for (int row = 0; row < cells.length; row++) {
                     for (int column = 0; column < cells[row].length; column++) {
@@ -196,19 +196,30 @@ public class Gui extends JFrame {
 
                         if (currentCell.getState() == CellState.ALIVE) {
                             if (totalAlive < 2) {
-                                newCells[row][column] = new Cell(CellState.DEAD);
+                                cells[row][column].setNextState(CellState.DEAD);
                             } else if (totalAlive == 2 || totalAlive == 3) {
-                                newCells[row][column] = new Cell(CellState.ALIVE);
+                                cells[row][column].setNextState(CellState.ALIVE);
                             } else if (totalAlive > 3) {
-                                newCells[row][column] = new Cell(CellState.DEAD);
+                                cells[row][column].setNextState(CellState.DEAD);
                             }
                         } else if (currentCell.getState() == CellState.DEAD && totalAlive == 3) {
-                            newCells[row][column] = new Cell(CellState.ALIVE);
+                            cells[row][column].setNextState(CellState.ALIVE);
+                        } else {
+                            cells[row][column].setNextState(cells[row][column].getState());
                         }
                     }
                 }
 
-                resetCells(newCells);
+                for (int row = 0; row < cells.length; row++) {
+                    for (int column = 0; column < cells[row].length; column++) {
+                        cells[row][column].applyNextState();
+                    }
+                }
+
+                //centerPanel.revalidate();
+                //centerPanel.repaint();
+
+                //resetCells(newCells);
             }
         }
     }
